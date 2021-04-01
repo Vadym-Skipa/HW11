@@ -68,7 +68,7 @@ logging.basicConfig(level=logging.INFO)
 
 def logged(func):
     # log function arguments and its return value
-    @wraps(func)
+    # @wraps(func)
     def inner(*args, **kwargs):
         logging.basicConfig(level=logging.INFO)
         str_args = ''
@@ -105,9 +105,7 @@ def func1(*args, **kwargs):
     return 3 + len(args)
 
 
-# print(func1(4, 4, 4, a=3, error="   "))
-
-
+print(func1(4, 4, 4, a=3, error="   "))
 # you called func(4, 4, 4)
 # it returned 6
 
