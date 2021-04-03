@@ -65,6 +65,11 @@ def multiply(a, b, c, d, e):
 # and **kwargs and print them both):
 logging.basicConfig(level=logging.INFO)
 
+def to_str(arg):
+    if isinstance(arg, str):
+        return "\"" + arg + "\""
+    else:
+        return str(arg)
 
 def logged(func):
     # log function arguments and its return value
@@ -73,25 +78,12 @@ def logged(func):
         logging.basicConfig(level=logging.INFO)
         str_args = ''
         if args:
-            for arg in args:
-                if str_args != "":
-                    str_args += ", "
-                if isinstance(arg, str):
-                    str_args += "\"" + str(arg) + "\""
-                else:
-                    str_args += str(arg)
+            str_args += " ,".join(to_str(arg) for arg in args)
         if kwargs:
-            for key, value in kwargs.items():
-                if str_args != "":
-                    str_args += ", "
-                if isinstance(key, str):
-                    str_args += "\"" + str(key) + "\"" + "="
-                else:
-                    str_args += str(key) + "="
-                if isinstance(value, str):
-                    str_args += "\"" + str(value) + "\""
-                else:
-                    str_args += str(value)
+            str_kwargs = " ,".join(to_str(key) + "=" + to_str(value) for key, value in kwargs.items())
+            if str_args:
+                str_args += ", "
+            str_args += str_kwargs
         logging.info(f"you called {func.__name__}({str_args})")
         result = func(*args, **kwargs)
         logging.info(f"it returned {result}")
@@ -105,7 +97,7 @@ def func1(*args, **kwargs):
     return 3 + len(args)
 
 
-print(func1(4, 4, 4, a=3, error="   "))
+# print(func1(4, 4, 4, a=3, error="   "))
 # you called func(4, 4, 4)
 # it returned 6
 
