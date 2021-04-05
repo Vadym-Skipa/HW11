@@ -47,8 +47,8 @@ def add(a, b):
     return a + b
 
 
-# print(add(5, 5))  # 10
-# print(add(4, 4))  # "Please use only odd numbers!"
+print(add(5, 5))  # 10
+print(add(4, 4))  # "Please use only odd numbers!"
 
 
 @only_odd_parameters
@@ -73,14 +73,14 @@ def to_str(arg):
 
 def logged(func):
     # log function arguments and its return value
-    # @wraps(func)
+    @wraps(func)
     def inner(*args, **kwargs):
         logging.basicConfig(level=logging.INFO)
         str_args = ''
         if args:
             str_args += " ,".join(to_str(arg) for arg in args)
         if kwargs:
-            str_kwargs = " ,".join(to_str(key) + "=" + to_str(value) for key, value in kwargs.items())
+            str_kwargs = " ,".join(str(key) + "=" + to_str(value) for key, value in kwargs.items())
             if str_args:
                 str_args += ", "
             str_args += str_kwargs
@@ -93,13 +93,20 @@ def logged(func):
 
 
 @logged
-def func1(*args, **kwargs):
+def func1(*args):
     return 3 + len(args)
+
+@logged
+def func2(*args, **kwargs):
+    return 3 + len(args) - len(kwargs)
 
 
 # print(func1(4, 4, 4, a=3, error="   "))
-# you called func(4, 4, 4)
+# you called func1(4, 4, 4)
 # it returned 6
+# print(func2(4, 4, 4, a=3, error="   "))
+# you called func1(4, 4, 4, a=3, error="   "))
+# it returned 4
 
 
 # 4. type_check
